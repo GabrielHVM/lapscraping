@@ -9,6 +9,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from typing import List
+import os
 import re
 
 @dataclass(slots=True)
@@ -24,7 +25,9 @@ class WebScraper:
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
-        self.selenium_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options )
+        chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+        # self.selenium_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options )
+        self.selenium_driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options )
         self.url = "https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops"
     
     def get_laptops_informations_from_url(self, manufacturer:str = "lenovo", sort:bool = True, ) -> List[Laptop]:
