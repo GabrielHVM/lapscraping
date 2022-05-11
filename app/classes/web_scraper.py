@@ -15,7 +15,7 @@ import re
 @dataclass(slots=True)
 class WebScraper:
     """web scraper class"""
-
+ 
     selenium_driver: webdriver
     url: str 
 
