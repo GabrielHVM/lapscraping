@@ -1,5 +1,5 @@
 """Module with main code"""
-from classes.web_scraper import WebScraper
+from app.classes.web_scraper import WebScraper
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)   

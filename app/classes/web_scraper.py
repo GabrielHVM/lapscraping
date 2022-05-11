@@ -3,7 +3,7 @@ Module with web scraper class who represents the web scraper client
 """
 
 from dataclasses import dataclass
-from classes.laptop import Laptop
+from app.classes.laptop import Laptop
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
