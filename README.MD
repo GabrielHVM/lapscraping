@@ -51,7 +51,7 @@ When you run the app, it will show this lines in you terminal:
  * Running on http://127.0.0.1:5000 (Press CTRL+C to quit)
 ```
 
-Informing that app is ready to use. Therefore, for use the app you will need to make a GET request like in Heroku app, but now you will make this request in the localhost link with port 5000:
+Informing that app is ready to use. Therefore, for use the app you will need to make a GET request [like in Heroku app](##heroku-app), but now you will make this request in the localhost link with port 5000:
 
 ```
 http://127.0.0.1:5000
