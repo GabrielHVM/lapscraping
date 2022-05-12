@@ -4,42 +4,34 @@ Module with web scraper class who represents the web scraper client
 
 from dataclasses import dataclass
 from app.classes.laptop import Laptop
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from typing import List
-import os
+from requests import get as get_request
 import re
 
 @dataclass(slots=True)
 class WebScraper:
     """web scraper class"""
- 
-    selenium_driver: webdriver
     url: str 
 
     def __init__(self) -> None:
         """Initializer of the class"""
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--no-sandbox")
-        # chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-        self.selenium_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options )
-        # self.selenium_driver = webdriver.Chrome(executable_path=str(os.environ.get("CHROMEDRIVER_PATH")),options=chrome_options )
         self.url = "https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops"
+
+    def _get_page_content(self) -> bytes:
+        """Gets page content"""
+        page_response = get_request(self.url)
+        page_content = page_response.content
+        return page_content
     
     def get_laptops_informations_from_url(self, manufacturer:str = "lenovo", sort:bool = True, ) -> List[Laptop]:
         """Gets laptops information from webscraper.io"""
         list_of_laptops: List[Laptop] = []
-        self.selenium_driver.get(self.url)
-        page_content = self.selenium_driver.page_source
-        html_parsed = BeautifulSoup(page_content, features="html.parser")
+        page_content = self._get_page_content()
+        page_html_parsed = BeautifulSoup(page_content, features="html.parser")
         root_url = self.url.split('/test-sites')[0]
         # Iterates across all laptops
-        for div_tag in html_parsed.findAll('div', attrs={'class':'thumbnail'}):
+        for div_tag in page_html_parsed.findAll('div', attrs={'class':'thumbnail'}):
             div_caption = div_tag.find('div', attrs={'class':'caption'})
             if div_caption is not None:
                 laptop_tag = div_caption.find('a', href=True, attrs={'class':'title'})
